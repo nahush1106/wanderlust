@@ -75,7 +75,7 @@ module.exports.destroyListing = async(req,res) => {
 };
 
 module.exports.searchListings = async (req, res) => {
-   let { q } = req.query;
+    let { q } = req.query;
 
     if (!q) {
         return res.redirect("/listings");
@@ -92,6 +92,17 @@ module.exports.searchListings = async (req, res) => {
         ]
     });
 
+    res.render("listings/index.ejs", { allListings });
+};
+
+module.exports.filterByCategory = async (req, res) => {
+    const { category } = req.query;
+
+    if (!category) {
+        return res.redirect("/listings");
+    }
+
+    const allListings = await Listing.find({ category });
 
     res.render("listings/index.ejs", { allListings });
 };
